@@ -1,0 +1,99 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="create artikl table" author="Simon Sporer">
+        <createTable tableName="artikl">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_artikl"/>
+            </column>
+            <column name="naziv" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dobavljac" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create ugovor table" author="Simon Sporer">
+        <createTable tableName="ugovor">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ugovor"/>
+            </column>
+            <column name="kupac" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="broj_ugovora" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="datum_akontacije" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rok_isporuke" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create ugovor_artikl join table" author="Simon Sporer">
+        <createTable tableName="ugovor_artikl">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ugovor_artikl"/>
+            </column>
+            <column name="ugovor_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="artikl_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kolicina" type="int" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="ugovor_artikl"
+                baseColumnNames="ugovor_id"
+                constraintName="fk_ugovor_artikl_ugovor"
+                referencedTableName="ugovor"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="ugovor_artikl"
+                baseColumnNames="artikl_id"
+                constraintName="fk_ugovor_artikl_artikl"
+                referencedTableName="artikl"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="artikl initial data" author="Simon Sporer">
+
+        <insert tableName="artikl">
+            <column name="naziv" value="Perilica posuđa ugradbena Electrolux EEA27200L"/>
+            <column name="dobavljac" value="Sancta Domenica"/>
+        </insert>
+
+        <insert tableName="artikl">
+            <column name="naziv" value="Napa ugradbena Gorenje TH60E3X"/>
+            <column name="dobavljac" value="Sancta Domenica"/>
+        </insert>
+
+        <insert tableName="artikl">
+            <column name="naziv" value="Ploča ugradbena kombinirana Gorenje GCE691BSC"/>
+            <column name="dobavljac" value="Bijela tehnika"/>
+        </insert>
+
+    </changeSet>
+
+
+</databaseChangeLog>
